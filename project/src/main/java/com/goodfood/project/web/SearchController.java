@@ -19,13 +19,20 @@ public class SearchController {
 	public String main(ModelMap model) throws Exception {
 //		BasicConfigurator.configure();
 
-		String queryString = "{" + "\"query\": {" + "\"bool\": {" + "\"must\": [" +
-//				"{\"match\":{\"gubun\":\""+param.get("gubun")+"\"}}," +
-				"{\"match\":{\"local\":\"아산\"}}" + "]" + "}" + "}," + "\"size\": 10"
-				 + "}";
+		String searchWord = "";
+		String queryString = "";
+		if (model.getAttribute("searchWord") != "") {
+			searchWord = (String) model.getAttribute("searchWord");
 
+			queryString = "{" + "\"query\": {" + "\"bool\": {" + "\"must\": [" +
+//				"{\"match\":{\"gubun\":\""+param.get("gubun")+"\"}}," +
+					"{\"match\":{\"local\":\"" + searchWord + "\"}}" + "]" + "}" + "}," + "\"size\": 10" + "}";
+		} else {
+			queryString = "{" + "\"query\": {" + "\"bool\": {" + "\"must\": [" +
+						"{\"match\":{\"local\":\"아산\"}}" + "]" + "}" + "}," + "\"size\": 10" + "}";
+		}
 		System.out.println("----------충청남도 모범음식점------------- " + queryString);
-		JestClient jestClient = jestClient("http://192.168.2.35:9200");
+		JestClient jestClient = jestClient("http://localhost:9200");
 		JestResult jestResult;
 		String jsonResult = "";
 
@@ -41,7 +48,7 @@ public class SearchController {
 		// jestClient.close();
 		System.out.println(jsonResult);
 		model.addAttribute("result", jsonResult);
-		
+
 		return "index2";
 	}
 

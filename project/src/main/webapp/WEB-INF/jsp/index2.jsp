@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<input id="searchWord" ></input>
 ${result}
 </body>
 </html>
